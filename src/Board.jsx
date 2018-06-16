@@ -6,7 +6,11 @@ import "./styles/board.scss";
 class Board extends Component {
     constructor(props){
         super(props);
-
+        this.state = {
+            width: 0,
+            height: 0,
+            mines: 0
+        }
     }
 
     render(){

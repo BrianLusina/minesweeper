@@ -41,7 +41,7 @@ class Cell extends Component {
     static getDerivedStateFromProps(nextProps, prevState){
         const { value } = nextProps;
 
-        if(value != prevState.value){
+        if(value !== prevState.value){
             return {
                 ...prevState,
                 value
@@ -52,11 +52,11 @@ class Cell extends Component {
     }
 
     render(){
-        const { value, onClick, onCtxMenu } = this.props;
+        const { value : { isFlagged, isMine, isRevealed } , onClick, onCtxMenu } = this.props;
         let className = "cell " + 
-        (value.isRevealed ? "" : " hidden") +
-        (value.isMine ? " is-mine" : "") +
-        (value.isFlagged ? " is-flag" : "");
+        (isRevealed ? "" : " hidden") +
+        (isMine ? " is-mine" : "") +
+        (isFlagged ? " is-flag" : "");
 
         return( 
             <div
