@@ -35,6 +35,24 @@ yarn start
 
 > Will start up the application on this [address](http://localhost:3000)
 
+## Tests
+
+Tests can be found in the [__tests__](./__tests__) directory and can be run with:
+
+```bash
+yarn test
+# or
+npm run test
+```
+
+Generating a coverage report can be done with:
+
+```bash
+npm run test:cover
+# or
+yarn test:cover
+```
+
 ## Deployment
 
 First create an optimized production build with:
