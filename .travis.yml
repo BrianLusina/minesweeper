@@ -26,5 +26,6 @@ before_deploy:
 deploy:
         provider: surge
         project: ./build
-        domain: minesweeper.surge.sh
+        skip_cleanup: true
+        domain: sweeper.surge.sh
         on: master
