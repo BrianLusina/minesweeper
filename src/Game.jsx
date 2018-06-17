@@ -10,8 +10,8 @@ class Game extends Component {
   constructor(props){
     super(props);
     this.state = {
-      height: 10,
-      width: 10,
+      height: 8,
+      width: 8,
       mines: 10
     }
   }

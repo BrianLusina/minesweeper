@@ -17,9 +17,9 @@ describe('Board', () => {
     let shallowWrapper;
 
     let props = {
-        mines: faker.random.number(10),
-        height: faker.random.number(10),
-        width: faker.random.number(10)
+        mines: 10,
+        height: 8,
+        width: 8
     }
 
     beforeEach(() => {
@@ -58,17 +58,18 @@ describe('Board', () => {
         expect(Board.prototype.__initBoardData.calledOnce).toEqual(true);
     });
 
-    it("should call __initBoardData instance method and call __createEmptyArray, __plantMines", () => {
+    xit("should call __initBoardData instance method and call __createEmptyArray, __plantMines", () => {
         mountWrapper.instance().__createEmptyArray = jest.fn();
         mountWrapper.instance().__plantMines = jest.fn();
-        mountWrapper.instance().render()
+        mountWrapper.instance().__getNeighbours = jest.fn();
 
+        mountWrapper.instance().render()
+        
         mountWrapper.instance().__initBoardData();
 
         expect(mountWrapper.instance().__createEmptyArray).toHaveBeenCalledTimes(1);
-        //expect(mountWrapper.instance().__plantMines).toHaveBeenCalledTimes(1);
-
-        // expect(mountWrapper.state("boardData")).toEqual();
+        expect(mountWrapper.instance().__plantMines).toHaveBeenCalledTimes(1);
+        expect(mountWrapper.instance().__getNeighbours).toHaveBeenCalledTimes(1);
     });
 
     it("should call __getRandomNumber that always returns a number", () => {

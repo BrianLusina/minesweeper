@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { func, shape, bool, number} from "prop-types";
+import "./styles/cell.scss"
 
 /**
  * Cell component renders each square
@@ -54,9 +55,9 @@ class Cell extends Component {
     render(){
         const { value : { isFlagged, isMine, isRevealed } , onClick, onCtxMenu } = this.props;
         let className = "cell " + 
-        (isRevealed ? "" : " hidden") +
-        (isMine ? " is-mine" : "") +
-        (isFlagged ? " is-flag" : "");
+        (isRevealed ? "" : "hidden ") +
+        (isMine ? " is-mine " : "") +
+        (isFlagged ? " is-flag " : "");
 
         return( 
             <div
