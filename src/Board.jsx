@@ -112,7 +112,7 @@ class Board extends Component {
                     // traverse the board and get the neighboring cells
                     const area = this.__traverseBoard(cell.x, cell.y, data)
 
-                    area.map(value => { 
+                    area.forEach(value => { 
                         if(value.isMine) {
                             mines++
                         } 
@@ -215,7 +215,7 @@ class Board extends Component {
      */
     __revealEmpty = (x, y, data) => {
         let area = this.__traverseBoard(x, y, data);
-        area.map(value => {
+        area.forEach(value => {
             if (!value.isFlagged && !value.isRevealed && (value.isEmpty || !value.isMine)) {
                 data[value.x][value.y].isRevealed = true;
                 if (value.isEmpty) {
@@ -313,8 +313,8 @@ class Board extends Component {
     __getMines = data => {
         let mineArray = [];
 
-        data.map(datarow => {
-            datarow.map((dataitem) => {
+        data.forEach(datarow => {
+            datarow.forEach((dataitem) => {
                 if (dataitem.isMine) {
                     mineArray.push(dataitem);
                 }
@@ -328,8 +328,8 @@ class Board extends Component {
     __getFlags = data =>{
         let mineArray = [];
 
-        data.map(datarow => {
-            datarow.map((dataitem) => {
+        data.forEach(datarow => {
+            datarow.forEach((dataitem) => {
                 if (dataitem.isFlagged) {
                     mineArray.push(dataitem);
                 }
@@ -343,8 +343,8 @@ class Board extends Component {
     __getHidden = data => {
         let mineArray = [];
 
-        data.map(datarow => {
-            datarow.map((dataitem) => {
+        data.forEach(datarow => {
+            datarow.forEach((dataitem) => {
                 if (!dataitem.isRevealed) {
                     mineArray.push(dataitem);
                 }
