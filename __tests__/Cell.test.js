@@ -7,7 +7,7 @@ import { mount, shallow} from "enzyme";
 import sinon from "sinon";
 
 
-describe('Cell should', () => {
+describe('Cell', () => {
     let mountWrapper;
     let shallowWrapper;
     let value = {
@@ -76,5 +76,92 @@ describe('Cell should', () => {
 
         mountWrapper.setProps(props);
         expect(mountWrapper.state("value")).toEqual(value);
+    });
+
+    it("should call __getValue and return null if not revealed and not isFlagged for cell", () => {
+        value = {
+            ...value,
+            isFlagged: false,
+            isRevealed: false,
+        };
+        
+        props = {
+            ...props,
+            value,
+        };
+
+        mountWrapper.setState(props);
+        
+        expect(mountWrapper.instance().__getValue()).toEqual(null);
+    });
+
+    it("should call __getValue and return 🚩 if isFlagged is true and isRevealed is false", () => {
+        value = {
+            ...value,
+            isFlagged: true,
+            isRevealed: false
+        };
+
+        props = {
+            ...props,
+            value,
+        };
+
+        mountWrapper.setState(props);
+
+        expect(mountWrapper.instance().__getValue()).toEqual("🚩")
+    });
+
+    it("should call __getValue and return mine 💣 if isMine is true", () => {
+        value = {
+            ...value,
+            isRevealed: true,
+            isMine: true
+        };
+
+        props = {
+            ...props,
+            value,
+        };
+        
+        mountWrapper.setState(props);
+
+        expect(mountWrapper.instance().__getValue()).toEqual("💣");
+    });
+
+    it("should call __getValue and return null if neighbour is 0", () => {
+        value = {
+            ...value,
+            isRevealed: true,
+            isMine: false,
+            neighbour: 0
+        };
+
+        props = {
+            ...props,
+            value,
+        };
+
+        mountWrapper.setState(props);
+
+        expect(mountWrapper.instance().__getValue()).toEqual(null)
+    });
+
+    it("should vall __getValue and return number of neighbouring mines if neighbor is not 0", () => {
+        value = {
+            ...value,
+            isRevealed: true,
+            isMine: false,
+            neighbour: 5
+        };
+
+        props = {
+            ...props,
+            value,
+        };
+
+        mountWrapper.setState(props);
+
+        expect(mountWrapper.instance().__getValue()).toEqual(value.neighbour)
     });
 })
