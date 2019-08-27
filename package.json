@@ -5,7 +5,7 @@
   "dependencies": {
     "prop-types": "^15.6.1",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.4.2",
     "sweetalert2": "^7.22.2"
   },
   "scripts": {
