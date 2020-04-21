@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "prop-types": "^15.6.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "sweetalert2": "^7.22.2"
   },
   "scripts": {
@@ -54,7 +54,7 @@
     "promise": "8.0.1",
     "raf": "3.4.0",
     "react-dev-utils": "^5.0.2",
-    "react-test-renderer": "^16.4.1",
+    "react-test-renderer": "^16.13.1",
     "resolve": "1.6.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.0.3",
