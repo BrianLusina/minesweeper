@@ -6,7 +6,8 @@
     "prop-types": "^15.6.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.2",
-    "sweetalert2": "^7.33.1"
+    "sweetalert2": "^7.22.2",
+    "snyk": "^1.361.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -14,7 +15,9 @@
     "build": "node scripts/build.js",
     "serve": "http-server ./build -p 3000",
     "test": "node scripts/test.js --env=jsdom",
-    "test:cover": "npm run test -- --coverage"
+    "test:cover": "npm run test -- --coverage",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "autoprefixer": "7.1.6",
@@ -109,5 +112,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "snyk": true
 }
