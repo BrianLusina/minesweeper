@@ -55,7 +55,7 @@
     "raf": "3.4.0",
     "react-dev-utils": "^5.0.2",
     "react-test-renderer": "^16.13.1",
-    "resolve": "1.6.0",
+    "resolve": "1.17.0",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.0.3",
     "sinon": "^6.3.5",
