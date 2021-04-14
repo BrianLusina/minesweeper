@@ -1,15 +1,32 @@
-import React, { Component } from 'react';
-import { func, shape, bool, number} from "prop-types";
+import React, { Component, MouseEvent } from 'react';
+import { CellData } from './types';
 import "./styles/cell.scss"
+
+interface Props {
+    value: CellData,
+    onClick: (event: MouseEvent<HTMLDivElement, MouseEvent>) => void,
+    onCtxMenu: Function
+}
+
+interface State {
+    value: {
+        isMine: boolean,
+        isFlagged: boolean,
+        isRevealed: boolean,
+        neighbour: number        
+    }
+}
 
 /**
  * Cell component renders each square
  */
-class Cell extends Component {
-    constructor(props){
+export default class Cell extends Component<Props, State> {
+    constructor(props: Props){
         super(props);
         this.state = {
-            value: {}
+            value: {
+                ...props.value,                
+            }
         }
     }
 
@@ -39,7 +56,7 @@ class Cell extends Component {
         return neighbour
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
+    static getDerivedStateFromProps(nextProps: Props, prevState: State){
         const { value } = nextProps;
 
         if(value !== prevState.value){
@@ -61,8 +78,10 @@ class Cell extends Component {
 
         return( 
             <div
+                // @ts-ignore
                 onClick={onClick}
                 className={className}
+                // @ts-ignore
                 onContextMenu={onCtxMenu}
             >
                 {this.__getValue()}
@@ -70,16 +89,3 @@ class Cell extends Component {
         )
     }
 }
-
-Cell.propTypes = {
-    value: shape({
-        isMine: bool,
-        isFlagged: bool,
-        isRevealed: bool,
-        neighbour: number
-    }),
-    onClick: func,
-    onCtxMenu: func
-}
-
-export default Cell;

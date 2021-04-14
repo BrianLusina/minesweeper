@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { number } from "prop-types";
-import "./styles/board.scss";
-import Cell from './Cell';
 import swal from "sweetalert2";
+import { number } from "prop-types";
+import Cell from './Cell';
+import { getRandomNumber } from './utils/gameutils'
+import "./styles/board.scss";
 
 /**
  * Board component is responsible for rendering the board is is aware of the game status:
@@ -62,6 +63,7 @@ class Board extends Component {
                 };
             }
         }
+
         return data;
     }
 
@@ -77,8 +79,8 @@ class Board extends Component {
         let randomX, randomY, minesPlanted = 0;
 
         while(minesPlanted < mines){
-            randomX = this.__getRandomNumber(width);
-            randomY = this.__getRandomNumber(height); 
+            randomX = getRandomNumber(width);
+            randomY = getRandomNumber(height); 
             let cell = data[randomX][randomY];
             
             // if this is not a mine
@@ -186,14 +188,6 @@ class Board extends Component {
     }
 
     /**
-     * Get a random number given a dimenstion
-     * @param {Number} dimension
-     */
-    __getRandomNumber = dimension => {
-        return Math.floor((Math.random() * 1000) + 1) % dimension;
-    }
-
-    /**
      * Reveals the whole board
      */
     __revealBoard(){       
@@ -208,7 +202,6 @@ class Board extends Component {
             boardData: data
         });
     }
-
 
     /**
      * Reveal empty logic for empty cells
@@ -231,14 +224,15 @@ class Board extends Component {
             return datarow.map((dataitem) => {
                 const {x, y} = dataitem;
                 return (
-                    <div key={x * datarow.length + y}>
-                        <Cell
-                            onClick={() => this.handleCellClick(x, y)}
-                            onCtxMenu={(e) => this.handleContextMenu(e, x, y)}
-                            value={dataitem}
-                        />
-                        {(datarow[datarow.length - 1] === dataitem) ? <div className="clear" /> : ""}
-                    </div>);
+                        <div key={x * datarow.length + y}>
+                            <Cell
+                                onClick={() => this.handleCellClick(x, y)}
+                                onCtxMenu={(e) => this.handleContextMenu(e, x, y)}
+                                value={dataitem}
+                            />
+                            {(datarow[datarow.length - 1] === dataitem) ? <div className="clear" /> : ""}
+                        </div>
+                    );
             })
         });
     }

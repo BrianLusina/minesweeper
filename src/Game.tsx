@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import './styles/game.scss';
 import Board from "./Board"
+import './styles/game.scss';
+
+interface Props {}
+
+interface State {
+  height: number,
+  width: number,
+  mines: number
+}
 
 /**
  * Entry point to the game. This stores the width and height of the game, along with the number of mines
  * in its state, this is later on passed to the Board as props
  */
-class Game extends Component {
-  constructor(props){
+export default class Game extends Component<Props, State> {
+  constructor(props: Props){
     super(props);
     this.state = {
       height: 8,
@@ -25,5 +33,3 @@ class Game extends Component {
     );
   }
 }
-
-export default Game;
