@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from 'react';
-import { CellData } from './types';
-import "./styles/cell.scss"
+import { CellData } from '../../types';
+import "./cell.scss"
 
 interface Props {
     value: CellData,

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import swal from "sweetalert2";
 import { number } from "prop-types";
-import Cell from './Cell';
-import { getRandomNumber } from './utils/gameutils'
-import "./styles/board.scss";
+import Cell from '../cell';
+import { getRandomNumber } from '../../utils/gameutils'
+import "./board.scss";
 
 /**
  * Board component is responsible for rendering the board is is aware of the game status:

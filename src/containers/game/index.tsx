@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Board from "./Board"
-import './styles/game.scss';
+import Board from "../../components/board"
+import './game.scss';
 
 interface Props {}
 

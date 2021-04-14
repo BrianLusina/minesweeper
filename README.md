@@ -15,22 +15,53 @@ Rules of the game:
 
 ## Pre-requisites
 
-Have [node](https://nodejs.org/en/), [npm](https://www.npmjs.com/) or [yarn](https://www.npmjs.com) installed on your development machine.
+1. [Node](https://nodejs.org/en/), [npm](https://www.npmjs.com/) or [yarn](https://www.npmjs.com)
 
-Install dependencies with
+   Have these installed on your development machine
+
+2. [Docker](https://www.docker.com/)
+
+   Used to package the application in a container and allow it to run as a microservice
+
+3. [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+
+   Allows interacting with the kubernetes API from your development machine
+
+4. [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+   Allows creating and setting up a Kubernetes Cluster on your development machine
+
+5. [Hadolint](https://github.com/hadolint/hadolint)
+
+   Used to lint Dockerfiles. Or, you can set this up by running:
+
+   ```bash
+   make setup-hadolint
+   ```
+
+   > This will install hadolint to the [bin](./bin) directory
+
+## Setup Environment
+
+You can setup the environment by running:
 
 ```bash
 npm install
 # or
 yarn install
+# or
+make install
 ```
 
-After which you can run the application with either:
+These will install the dependencies.
+
+After which you can run the application with:
 
 ```bash
 npm run start
 # or
 yarn start
+# or
+make start
 ```
 
 > Will start up the application on this [address](http://localhost:3000)
@@ -43,14 +74,18 @@ Tests can be found in the [__tests__](./__tests__) directory and can be run with
 yarn test
 # or
 npm run test
+# or
+make test
 ```
 
 Generating a coverage report can be done with:
 
 ```bash
-npm run test:cover
+npm run test:coverage
 # or
-yarn test:cover
+yarn test:coverage
+# or 
+make test-cover
 ```
 
 ## Deployment
@@ -61,6 +96,8 @@ First create an optimized production build with:
 npm run build
 # or
 yarn build
+# or
+make build
 ```
 
 > This will have the production build in the [build](./build) folder
@@ -74,6 +111,33 @@ yarn serve
 ```
 
 You can now deploy the build to any static server ([surge](https://surge.sh/), [netlify](https://www.netlify.com/), etc).
+
+## Built With
+
+* [TypeScript](https://www.typescriptlang.org/) - Programming language used
+* [ReactJS](https://reactjs.org/) - Frontend framework
+* [NPM](https://www.npmjs.com/) - Dependency management
+
+## Contributing
+
+Please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for details on our code of conduct, and the process for
+submitting pull requests to us. Also read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see
+the [tags on this repository](https://github.com/BrianLusina/minsweeper/releases).
+
+## Authors
+
+* **Brian Lusina** - *Initial work* - [BrianLusina](https://github.com/BrianLusina)
+
+See also the list of [contributors](https://github.com/BrianLusina/minesweeper/graphs/contributors) who participated in this
+project.
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)

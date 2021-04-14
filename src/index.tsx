@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Game from './Game';
+import Game from './containers/game';
 import registerServiceWorker from './registerServiceWorker';
 import reportWebVitals from './reportWebVitals';
-import './styles/index.scss';
+import './index.scss';
 
 /* istanbul ignore next */
 ReactDOM.render(
