@@ -1,0 +1,8 @@
+{
+    "*.{js,jsx,ts,tsx}": [
+        "eslint --fix"
+    ],
+    "*.{png,jpeg,jpg,gif,svg}": [
+        "imagemin-lint-staged"
+    ]
+}

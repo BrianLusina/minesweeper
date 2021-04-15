@@ -22,6 +22,10 @@ executors:
       - image: circleci/node:<< pipeline.parameters.node-image-tag >>
     working_directory: << pipeline.parameters.workingdir >>
 
+orbs:
+  slack: circleci/slack@4.3.0
+  aws-cli: circleci/aws-cli@1.3.0
+
 commands:
   build_docker_image:
     description: Build Docker Image
@@ -48,13 +52,15 @@ commands:
           name: Save application Docker image
           command: |
             docker save -o << parameters.image >>-image.tar << parameters.registry >>/<< parameters.image >>:$(echo $CIRCLE_SHA1 | cut -c1-7)
+
       - store_artifacts:
           path: ./<< parameters.image >>-image.tar
           destination: << parameters.image >>-image.tar
 
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: 
+            - .
 
   push_docker_image:
     description: Push Docker image to registry
@@ -90,6 +96,20 @@ commands:
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push << parameters.registry >>/<< parameters.image >>:<< parameters.tag >>-$(echo $CIRCLE_SHA1 | cut -c1-7)
             docker push << parameters.registry >>/<< parameters.image >>:<< parameters.tag >>
+
+  alert_on_failure:
+    description: Notifies channel on failure
+    parameters:
+      channel:
+        description: Slack channel to send slack notification
+        type: string
+        default: $SLACK_DEFAULT_CHANNEL
+    steps:
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
 jobs:
   dependencies:
     executor: node-executor
@@ -104,17 +124,24 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
-          command: |
-            make install
+          name: Install Frontend dependencies
+          command: make install
+
+      - run:
+          name: Install Project tooling
+          command: make setup-trivy
+
       - save_cache:
-          paths:
-            - .venv
           key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: 
+            - .
+
+      - alert_on_failure
 
   lint:
     executor: node-executor
@@ -140,12 +167,74 @@ jobs:
           name: Lint Application
           command: make lint
 
+      - alert_on_failure
+
+  test:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at:
+            .
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: Run Unit tests
+          command: make test
+
+      - alert_on_failure
+  
+  security-scan:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: .
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: Scan Frontend
+          command: make scan-frontend
+
+      - alert_on_failure
+  
+  build:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: .
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: Run Build
+          command: make build
+
+      - alert_on_failure
+
   build_docker_image:
     executor: docker-executor
     steps:
       - build_docker_image:
           image: minesweeper
           registry: $DOCKER_REGISTRY
+      
+      - run:
+          name: Scan Docker Image
+          command: |
+            export TAG=$($CIRCLE_SHA1 | cut -c1-7)
+            make scan-docker-image IMAGE=${$DOCKER_REGISTRY}/minesweeper:${TAG}
+
+      - alert_on_failure
 
   push_latest:
     executor: docker-executor
@@ -154,6 +243,8 @@ jobs:
           tag: latest
           image: minesweeper
           registry: $DOCKER_REGISTRY
+
+      - alert_on_failure
 
   publish_release:
     executor: node-executor
@@ -165,26 +256,60 @@ jobs:
           name: Publish release
           command: npx semantic-release
 
+      - alert_on_failure
+
 workflows:
   version: 2
   test_build_push_tag:
     jobs:
-      - dependencies
+      - dependencies:
+          context: thelusina-context
 
       - lint:
+          context: thelusina-context
           requires:
             - dependencies
-
-      - build_docker_image:
+      
+      - test:
+          context: thelusina-context
           requires:
             - lint
+      
+      - security-scan:
+          context: thelusina-context
+          requires:
+            - test
+
+      - build:
+          context: thelusina-context
+          requires:
+            - security-scan
+
+      - build_docker_image:
+          context: thelusina-context
+          filters:
+            branches:
+              only:
+                - develop
+                - main
+          requires:
+            - build
 
       - push_latest:
           context: thelusina-context
+          filters:
+            branches:
+              only:
+                - develop
+                - main
           requires:
             - build_docker_image
 
       - publish_release:
           context: thelusina-context
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - push_latest

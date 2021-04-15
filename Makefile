@@ -1,7 +1,45 @@
-# Create python virtualenv & source it
+OSFLAG 				:=
+ifeq ($(OS),Windows_NT)
+	OSFLAG += -D WIN32
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		OSFLAG += -D AMD64
+	endif
+	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		OSFLAG += -D IA32
+	endif
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OSFLAG += -D LINUX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OSFLAG += -D OSX
+	endif
+		UNAME_P := $(shell uname -p)
+	ifeq ($(UNAME_P),x86_64)
+		OSFLAG += -D AMD64
+	endif
+		ifneq ($(filter %86,$(UNAME_P)),)
+	OSFLAG += -D IA32
+		endif
+	ifneq ($(filter arm%,$(UNAME_P)),)
+		OSFLAG += -D ARM
+	endif
+endif
+
+echoos:
+	@echo $(OSFLAG)
+
+# TODO: setup hadolint based on the OS of the development machine this is being run on
+# this can be done with the OSFLAG above which already detects the current OS. Currently, this only setups up
+# hadolint on Linux
 setup-hadolint:
+# if running on Linux
 	wget -O ./bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
 	chmod +x ./bin/hadolint
+
+setup-trivy:
+	curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin v0.16.0
 
 install:
 	yarn install
@@ -15,15 +53,23 @@ test:
 test-coverage:
 	yarn test:coverage
 
+scan-frontend:
+	yarn audit --audit-level=critical
+
+scan-docker-image:
+	@echo "Scanning Docker Image: $(IMAGE)"
+	./bin/trivy $(IMAGE)
+
 # See local hadolint install instructions: https://github.com/hadolint/hadolint
 # This is linter for Dockerfiles
 lint-docker:
 	./bin/hadolint Dockerfile
 
-# Python source code linter: https://www.pylint.org/
-# This should be run from inside a virtualenv
 lint:
 	yarn lint
+
+lint-fix:
+	yarn lint:fix
 
 build:
 	yarn build

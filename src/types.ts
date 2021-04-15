@@ -5,4 +5,5 @@ export type CellData = {
     isFlagged: boolean;
     isRevealed: boolean;
     neighbour: number;
+    isEmpty: boolean;
 }

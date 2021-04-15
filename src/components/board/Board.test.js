@@ -1,16 +1,16 @@
-import React from "react";
-import { render } from "react-dom";
-import Board from "./index";
-import { mount, shallow } from "enzyme";
-import sinon from "sinon";
-import faker from "faker";
-import { assert } from "chai";
+import React from 'react';
+import { render } from 'react-dom';
+import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
+import faker from 'faker';
+import { assert } from 'chai';
+import Board from './index';
 
-describe("Board", () => {
+xdescribe('Board', () => {
   let mountWrapper;
   let shallowWrapper;
 
-  let props = {
+  const props = {
     mines: 10,
     height: 8,
     width: 8,
@@ -21,16 +21,16 @@ describe("Board", () => {
     shallowWrapper = shallow(<Board {...props} />);
   });
 
-  it("should be able to render", () => {
-    render(<Board {...props} />, document.createElement("div"));
+  it('should be able to render', () => {
+    render(<Board {...props} />, document.createElement('div'));
   });
 
-  it("should be able to mount", () => {
+  it('should be able to mount', () => {
     mount(<Board {...props} />);
   });
 
-  it("should call static method getDerivedStateFromProps to update state", () => {
-    sinon.stub(Board, "getDerivedStateFromProps").callsFake(() => props);
+  it('should call static method getDerivedStateFromProps to update state', () => {
+    sinon.stub(Board, 'getDerivedStateFromProps').callsFake(() => props);
 
     // receive props
     shallowWrapper.setProps(props);
@@ -42,33 +42,33 @@ describe("Board", () => {
     expect(shallowWrapper.state().width).toEqual(props.width);
   });
 
-  it("should call componentDidMount once and call __initBoardData", () => {
-    sinon.spy(Board.prototype, "componentDidMount");
-    sinon.spy(Board.prototype, "__initBoardData");
+  it('should call componentDidMount once and call initBoardData', () => {
+    sinon.spy(Board.prototype, 'componentDidMount');
+    sinon.spy(Board.prototype, 'initBoardData');
 
     mount(<Board {...props} />);
 
     expect(Board.prototype.componentDidMount.calledOnce).toEqual(true);
-    expect(Board.prototype.__initBoardData.calledOnce).toEqual(true);
+    expect(Board.prototype.initBoardData.calledOnce).toEqual(true);
   });
 
-  xit("should call __initBoardData instance method and call __createEmptyArray, __plantMines", () => {
-    mountWrapper.instance().__createEmptyArray = jest.fn();
-    mountWrapper.instance().__plantMines = jest.fn();
-    mountWrapper.instance().__getNeighbours = jest.fn();
+  xit('should call initBoardData instance method and call createEmptyArray, plantMines', () => {
+    mountWrapper.instance().createEmptyArray = jest.fn();
+    mountWrapper.instance().plantMines = jest.fn();
+    mountWrapper.instance().getNeighbours = jest.fn();
 
     mountWrapper.instance().render();
 
-    mountWrapper.instance().__initBoardData();
+    mountWrapper.instance().initBoardData();
 
-    expect(mountWrapper.instance().__createEmptyArray).toHaveBeenCalledTimes(1);
-    expect(mountWrapper.instance().__plantMines).toHaveBeenCalledTimes(1);
-    expect(mountWrapper.instance().__getNeighbours).toHaveBeenCalledTimes(1);
+    expect(mountWrapper.instance().createEmptyArray).toHaveBeenCalledTimes(1);
+    expect(mountWrapper.instance().plantMines).toHaveBeenCalledTimes(1);
+    expect(mountWrapper.instance().getNeighbours).toHaveBeenCalledTimes(1);
   });
 
-  it("should call __getRandomNumber that always returns a number", () => {
-    let dimension = faker.random.number(10);
-    let randomNum = mountWrapper.instance().__getRandomNumber(dimension);
+  it('should call getRandomNumber that always returns a number', () => {
+    const dimension = faker.random.number(10);
+    const randomNum = mountWrapper.instance().getRandomNumber(dimension);
     assert.isNumber(randomNum);
   });
 });
