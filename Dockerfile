@@ -1,6 +1,7 @@
 FROM node:alpine as builder
 
-RUN apk add --update \
+# hadolint ignore=DL3018
+RUN apk add --no-cache \
     bash \
     lcms2-dev \
     libpng-dev \
@@ -36,6 +37,7 @@ EXPOSE 80
 WORKDIR /usr/share/nginx/html
 
 # Add bash
+# hadolint ignore=DL3018
 RUN apk add --no-cache bash
 
 # Start Nginx server
