@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import Board from '../../components/board';
 import './game.scss';
 
@@ -22,7 +22,7 @@ export default class Game extends Component<Record<string, never>, State> {
     };
   }
 
-  render() {
+  render(): ReactNode {
     const { height, width, mines } = this.state;
     return (
       <div className="game">

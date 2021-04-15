@@ -2,7 +2,7 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable consistent-return */
 
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import swal from 'sweetalert2';
 import Cell from '../cell';
 import {
@@ -52,7 +52,7 @@ export default class Board extends Component<Props, State> {
     this.handleContextMenu = this.handleContextMenu.bind(this);
   }
 
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State): State | null {
     const { mines, height, width } = nextProps;
 
     if (mines !== prevState.mines || height !== prevState.height || width !== prevState.width) {
@@ -69,7 +69,7 @@ export default class Board extends Component<Props, State> {
   /**
    * Reveals the whole board
    */
-  revealBoard() {
+  revealBoard(): void {
     const { boardData } = this.state;
 
     const data = boardData.map((datarow) => {
@@ -84,7 +84,7 @@ export default class Board extends Component<Props, State> {
     });
   }
 
-  handleContextMenu(e: Event, x: number, y: number) {
+  handleContextMenu(e: Event, x: number, y: number): void {
     e.preventDefault();
     const { boardData } = this.state;
 
@@ -118,7 +118,7 @@ export default class Board extends Component<Props, State> {
     });
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { height, width, mines } = this.props;
     let boardData = createEmptyArray(height, width);
     boardData = plantMines(boardData, height, width, mines);
@@ -130,12 +130,12 @@ export default class Board extends Component<Props, State> {
   }
 
   // eslint-disable consistent-return
-  handleCellClick(x: number, y: number) {
+  handleCellClick(x: number, y: number): void {
     const { boardData } = this.state;
     const { mines, height, width } = this.props;
 
     // check if revealed. return if true.
-    if (boardData[x][y].isRevealed || boardData[x][y].isFlagged) return null;
+    if (boardData[x][y].isRevealed || boardData[x][y].isFlagged) return;
 
     // check if mine. game over if true
     if (boardData[x][y].isMine) {
@@ -164,7 +164,7 @@ export default class Board extends Component<Props, State> {
     });
   }
 
-  render() {
+  render(): ReactNode {
     const { boardData, mines, gameStatus } = this.state;
     return (
       <div className="board">

@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/BrianLusina/minesweeper.svg?branch=master)](https://travis-ci.org/BrianLusina/minesweeper)
 [![codecov](https://codecov.io/gh/BrianLusina/minesweeper/branch/master/graph/badge.svg)](https://codecov.io/gh/BrianLusina/minesweeper)
+[![CircleCI](https://circleci.com/gh/BrianLusina/minesweeper/tree/develop.svg?style=shield)](https://app.circleci.com/pipelines/github/BrianLusina/minesweeper)
 
 A simple classic minesweeper game built in [ReactJS](https://reactjs.org/).
 

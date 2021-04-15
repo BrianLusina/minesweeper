@@ -57,7 +57,12 @@ export function getMines(data: CellData[][]): CellData[] {
  * @param {Number} mines Number of mines to plant
  * @returns {Array} Returns the array cells, with randomly planted mines
  */
-export function plantMines(data: CellData[][], height: number, width: number, mines: number) {
+export function plantMines(
+  data: CellData[][],
+  height: number,
+  width: number,
+  mines: number,
+): CellData[][] {
   let randomX;
   let randomY;
   let minesPlanted = 0;
@@ -145,7 +150,7 @@ export function traverseBoard(
  * @param {Number} width
  * @returns {Array}
  */
-export function getNeighbours(data: CellData[][], height: number, width: number) {
+export function getNeighbours(data: CellData[][], height: number, width: number): CellData[][] {
   const updatedData = data;
 
   for (let i = 0; i < height; i++) {
@@ -215,7 +220,7 @@ export function revealEmpty(
   height: number,
   width: number,
   data: CellData[][],
-) {
+): CellData[][] {
   const area = traverseBoard(x, y, height, width, data);
   area.forEach((value) => {
     if (!value.isFlagged && !value.isRevealed && (value.isEmpty || !value.isMine)) {
