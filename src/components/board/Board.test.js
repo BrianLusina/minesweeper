@@ -6,7 +6,7 @@ import faker from 'faker';
 import { assert } from 'chai';
 import Board from './index';
 
-describe('Board', () => {
+xdescribe('Board', () => {
   let mountWrapper;
   let shallowWrapper;
 
