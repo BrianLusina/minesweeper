@@ -1,7 +1,10 @@
-# Create python virtualenv & source it
 setup-hadolint:
+# if running on Linux
 	wget -O ./bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
 	chmod +x ./bin/hadolint
+
+setup-trivy:
+	curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ./bin v0.16.0
 
 install:
 	yarn install
@@ -14,6 +17,13 @@ test:
 
 test-coverage:
 	yarn test:coverage
+
+scan-frontend:
+	yarn audit --audit-level=critical
+
+scan-docker-image:
+	@echo "Scanning Docker Image: $(IMAGE)"
+	./bin/trivy $(IMAGE)
 
 # See local hadolint install instructions: https://github.com/hadolint/hadolint
 # This is linter for Dockerfiles
