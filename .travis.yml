@@ -2,6 +2,10 @@ sudo: required
 language: node_js
 node_js:
         - '10'
+        - '11'
+        - '12'
+        - '13'
+        - '14'
 
 cache:
         directories:
@@ -10,7 +14,7 @@ cache:
                 - .cache/
 
 before_script:
-        - npm ci
+        - npm install
 
 script:
         - npm run test
@@ -28,4 +32,4 @@ deploy:
         project: ./build
         skip_cleanup: true
         domain: sweeper.surge.sh
-        on: master
+        on: main
