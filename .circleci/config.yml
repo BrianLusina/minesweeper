@@ -52,6 +52,7 @@ commands:
           name: Save application Docker image
           command: |
             docker save -o << parameters.image >>-image.tar << parameters.registry >>/<< parameters.image >>:$(echo $CIRCLE_SHA1 | cut -c1-7)
+
       - store_artifacts:
           path: ./<< parameters.image >>-image.tar
           destination: << parameters.image >>-image.tar
@@ -123,9 +124,12 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install dependencies
-          command: |
-            make install
+          name: Install Frontend dependencies
+          command: make install
+
+      - run:
+          name: Install Project tooling
+          command: make setup-trivy
 
       - save_cache:
           key: v1-dependencies-{{ checksum "yarn.lock" }}
@@ -182,6 +186,40 @@ jobs:
           command: make test
 
       - alert_on_failure
+  
+  security-scan:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: .
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: Scan Frontend
+          command: make scan-frontend
+
+      - alert_on_failure
+  
+  build:
+    executor: node-executor
+    steps:
+      - attach_workspace:
+          at: .
+      
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+
+      - run:
+          name: Run Build
+          command: make build
+
+      - alert_on_failure
 
   build_docker_image:
     executor: docker-executor
@@ -189,6 +227,12 @@ jobs:
       - build_docker_image:
           image: minesweeper
           registry: $DOCKER_REGISTRY
+      
+      - run:
+          name: Scan Docker Image
+          command: |
+            export TAG=$($CIRCLE_SHA1 | cut -c1-7)
+            make scan-docker-image IMAGE=${$DOCKER_REGISTRY}/minesweeper:${TAG}
 
       - alert_on_failure
 
@@ -230,6 +274,16 @@ workflows:
           context: thelusina-context
           requires:
             - lint
+      
+      - security-scan:
+          context: thelusina-context
+          requires:
+            - test
+
+      - build:
+          context: thelusina-context
+          requires:
+            - security-scan
 
       - build_docker_image:
           context: thelusina-context
@@ -239,7 +293,7 @@ workflows:
                 - develop
                 - main
           requires:
-            - lint
+            - build
 
       - push_latest:
           context: thelusina-context
