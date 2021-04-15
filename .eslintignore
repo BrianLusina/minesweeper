@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+config/
+build/
+public/
+.eslintrc.js
+.pretterrc.js
+server/
+*.test.ts
+*.test.tsx

@@ -1,10 +1,10 @@
-import React from "react";
-import { render } from "react-dom";
-import Cell from "./index";
-import { mount, shallow } from "enzyme";
-import sinon from "sinon";
+import React from 'react';
+import { render } from 'react-dom';
+import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
+import Cell from './index';
 
-describe("Cell", () => {
+describe('Cell', () => {
   let mountWrapper;
   let shallowWrapper;
   let value = {
@@ -24,39 +24,39 @@ describe("Cell", () => {
     mountWrapper = mount(<Cell {...props} />);
   });
 
-  it("render without crash", () => {
-    render(<Cell {...props} />, document.createElement("div"));
+  it('render without crash', () => {
+    render(<Cell {...props} />, document.createElement('div'));
   });
 
-  it("should be able to mount", () => {
+  it('should be able to mount', () => {
     mount(<Cell {...props} />);
   });
 
-  it("should call getDerivedStateFromProps when we receive props", () => {
-    sinon.stub(Cell, "getDerivedStateFromProps").callsFake(() => props);
+  it('should call getDerivedStateFromProps when we receive props', () => {
+    sinon.stub(Cell, 'getDerivedStateFromProps').callsFake(() => props);
     shallowWrapper.setProps(props);
     expect(Cell.getDerivedStateFromProps.calledOnce).toEqual(true);
     expect(Cell.getDerivedStateFromProps.returnValues[0]).toEqual(props);
   });
 
-  it("should call props onClick function when div is clicked", () => {
-    shallowWrapper.find("div").simulate("click");
+  it('should call props onClick function when div is clicked', () => {
+    shallowWrapper.find('div').simulate('click');
     expect(props.onClick).toHaveBeenCalledTimes(1);
   });
 
-  it("should call onCtxMenu prop function when div onContextMenu is clicked", () => {
-    shallowWrapper.find("div").simulate("contextMenu");
+  it('should call onCtxMenu prop function when div onContextMenu is clicked', () => {
+    shallowWrapper.find('div').simulate('contextMenu');
     expect(props.onCtxMenu).toHaveBeenCalledTimes(1);
   });
 
-  it("should call private function __getValue when render phase is reached", () => {
-    shallowWrapper.instance().__getValue = jest.fn();
+  it('should call private function getValue when render phase is reached', () => {
+    shallowWrapper.instance().getValue = jest.fn();
     shallowWrapper.instance().render();
-    expect(shallowWrapper.instance().__getValue).toHaveBeenCalledTimes(1);
+    expect(shallowWrapper.instance().getValue).toHaveBeenCalledTimes(1);
   });
 
-  it("should update state when props are received", () => {
-    expect(mountWrapper.state("value")).toEqual(props.value);
+  it('should update state when props are received', () => {
+    expect(mountWrapper.state('value')).toEqual(props.value);
 
     // update the props
     value = {
@@ -72,10 +72,10 @@ describe("Cell", () => {
     };
 
     mountWrapper.setProps(props);
-    expect(mountWrapper.state("value")).toEqual(value);
+    expect(mountWrapper.state('value')).toEqual(value);
   });
 
-  it("should call __getValue and return null if not revealed and not isFlagged for cell", () => {
+  it('should call getValue and return null if not revealed and not isFlagged for cell', () => {
     value = {
       ...value,
       isFlagged: false,
@@ -89,10 +89,10 @@ describe("Cell", () => {
 
     mountWrapper.setState(props);
 
-    expect(mountWrapper.instance().__getValue()).toEqual(null);
+    expect(mountWrapper.instance().getValue()).toEqual(null);
   });
 
-  it("should call __getValue and return 🚩 if isFlagged is true and isRevealed is false", () => {
+  it('should call getValue and return 🚩 if isFlagged is true and isRevealed is false', () => {
     value = {
       ...value,
       isFlagged: true,
@@ -106,10 +106,10 @@ describe("Cell", () => {
 
     mountWrapper.setState(props);
 
-    expect(mountWrapper.instance().__getValue()).toEqual("🚩");
+    expect(mountWrapper.instance().getValue()).toEqual('🚩');
   });
 
-  it("should call __getValue and return mine 💣 if isMine is true", () => {
+  it('should call getValue and return mine 💣 if isMine is true', () => {
     value = {
       ...value,
       isRevealed: true,
@@ -123,10 +123,10 @@ describe("Cell", () => {
 
     mountWrapper.setState(props);
 
-    expect(mountWrapper.instance().__getValue()).toEqual("💣");
+    expect(mountWrapper.instance().getValue()).toEqual('💣');
   });
 
-  it("should call __getValue and return null if neighbour is 0", () => {
+  it('should call getValue and return null if neighbour is 0', () => {
     value = {
       ...value,
       isRevealed: true,
@@ -141,10 +141,10 @@ describe("Cell", () => {
 
     mountWrapper.setState(props);
 
-    expect(mountWrapper.instance().__getValue()).toEqual(null);
+    expect(mountWrapper.instance().getValue()).toEqual(null);
   });
 
-  it("should vall __getValue and return number of neighbouring mines if neighbor is not 0", () => {
+  it('should vall getValue and return number of neighbouring mines if neighbor is not 0', () => {
     value = {
       ...value,
       isRevealed: true,
@@ -159,6 +159,6 @@ describe("Cell", () => {
 
     mountWrapper.setState(props);
 
-    expect(mountWrapper.instance().__getValue()).toEqual(value.neighbour);
+    expect(mountWrapper.instance().getValue()).toEqual(value.neighbour);
   });
 });
