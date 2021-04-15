@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React, { Component } from 'react';
 
 import { CellData } from '../../types';
@@ -5,7 +10,11 @@ import './cell.scss';
 
 interface Props {
   value: CellData;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   onClick: Function;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   onCtxMenu: Function;
 }
 
@@ -83,9 +92,11 @@ export default class Cell extends Component<Props, State> {
 
     return (
       <div
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         onClick={onClick}
         className={className}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         onContextMenu={onCtxMenu}
       >

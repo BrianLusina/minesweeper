@@ -58,7 +58,8 @@ commands:
 
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: 
+            - .
 
   push_docker_image:
     description: Push Docker image to registry
@@ -133,7 +134,8 @@ jobs:
 
       - persist_to_workspace:
           root: .
-          paths: .
+          paths: 
+            - .
 
       - alert_on_failure
 
