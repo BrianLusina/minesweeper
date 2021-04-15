@@ -28,13 +28,6 @@ orbs:
 
 commands:
 
-  install_deps_for_notifier:
-    description: Install dependencies for Slack Notifier
-    steps:
-      - run:
-          name: Install missing dependencies
-          command: apk add --update curl jq
-
   build_docker_image:
     description: Build Docker Image
     parameters:
@@ -114,6 +107,10 @@ commands:
         type: string
         default: $SLACK_DEFAULT_CHANNEL
     steps:
+      - run:
+          name: Install missing dependencies
+          command: apk add --update curl jq
+
       - slack/notify:
           channel: $SLACK_DEFAULT_CHANNEL
           event: fail
@@ -241,9 +238,7 @@ jobs:
           name: Scan Docker Image
           command: |
             export TAG=$($CIRCLE_SHA1 | cut -c1-7)
-            make scan-docker-image IMAGE=${$DOCKER_REGISTRY}/minesweeper:${TAG}
-
-      - install_deps_for_notifier
+            make scan-docker-image IMAGE=$DOCKER_REGISTRY/minesweeper:${TAG}
 
       - alert_on_failure
 
@@ -254,8 +249,6 @@ jobs:
           tag: latest
           image: minesweeper
           registry: $DOCKER_REGISTRY
-
-      - install_deps_for_notifier
 
       - alert_on_failure
 
