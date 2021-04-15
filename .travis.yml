@@ -1,10 +1,6 @@
 sudo: required
 language: node_js
 node_js:
-        - '10'
-        - '11'
-        - '12'
-        - '13'
         - '14'
 
 cache:
@@ -18,7 +14,7 @@ before_script:
 
 script:
         - npm run test
-        - npm run test:cover
+        - npm run test:coverage
         - codecov
 
 after_success:
