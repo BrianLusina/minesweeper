@@ -242,7 +242,7 @@ jobs:
           name: Scan Docker Image
           command: |
             export TAG=$($CIRCLE_SHA1 | cut -c1-7)
-            make scan-docker-image IMAGE=$DOCKER_REGISTRY/minesweeper:${TAG}
+            ./bin/trivy $DOCKER_REGISTRY/minesweeper:${TAG}
 
       - alert_on_failure
 
