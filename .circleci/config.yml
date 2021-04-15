@@ -125,10 +125,11 @@ jobs:
           name: install dependencies
           command: |
             make install
+
       - save_cache:
-          paths:
-            - .venv
           key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - persist_to_workspace:
           root: .
@@ -215,17 +216,21 @@ workflows:
   version: 2
   test_build_push_tag:
     jobs:
-      - dependencies
+      - dependencies:
+          context: thelusina-context
 
       - lint:
+          context: thelusina-context
           requires:
             - dependencies
       
       - test:
+          context: thelusina-context
           requires:
             - lint
 
       - build_docker_image:
+          context: thelusina-context
           filters:
             branches:
               only:
