@@ -46,6 +46,10 @@ commands:
           at: .
 
       - run:
+          name: Install missing dependencies
+          command: apk add --update curl jq
+
+      - run:
           name: Build application Docker image
           command: |
             docker build -t << parameters.registry >>/<< parameters.image >>:$(echo $CIRCLE_SHA1 | cut -c1-7) .
@@ -83,6 +87,10 @@ commands:
           at: .
 
       - run:
+          name: Install missing dependencies
+          command: apk add --update curl jq
+
+      - run:
           name: Load application Docker image
           command: docker load --input << parameters.image >>-image.tar
 
@@ -107,10 +115,6 @@ commands:
         type: string
         default: $SLACK_DEFAULT_CHANNEL
     steps:
-      - run:
-          name: Install missing dependencies
-          command: apk add --update curl jq
-
       - slack/notify:
           channel: $SLACK_DEFAULT_CHANNEL
           event: fail
