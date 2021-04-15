@@ -163,7 +163,7 @@ jobs:
       - alert_on_failure
 
   test:
-    executor: npm-executor
+    executor: node-executor
     steps:
       - attach_workspace:
           at:
@@ -220,27 +220,35 @@ workflows:
       - lint:
           requires:
             - dependencies
+      
+      - test:
+          requires:
+            - lint
 
       - build_docker_image:
           filters:
-            only:
-              - develop
+            branches:
+              only:
+                - develop
+                - main
           requires:
             - lint
 
       - push_latest:
           context: thelusina-context
           filters:
-            only:
-              - develop
-              - main
+            branches:
+              only:
+                - develop
+                - main
           requires:
             - build_docker_image
 
       - publish_release:
           context: thelusina-context
           filters:
-            only:
-              - main
+            branches:
+              only:
+                - main
           requires:
             - push_latest
