@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minesweeper
+  labels:
+    app: minesweeper
+spec:
+  selector:
+    matchLabels:
+      app: minesweeper
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  minReadySeconds: 60
+  progressDeadlineSeconds: 1800
+  template:
+    metadata:
+      labels:
+        app: minesweeper
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: minesweeper-game
+        image: thelusina/minesweeper
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /
+            scheme: HTTP
+            port: 80
+          successThreshold: 1
+          periodSeconds: 30
+          failureThreshold: 3
+          timeoutSeconds: 10

@@ -1,0 +1,42 @@
+[
+    {
+      "ParameterKey": "Environment",
+      "ParameterValue": "minesweeper-dev"
+    },
+    {
+      "ParameterKey": "ClusterName",
+      "ParameterValue": "minesweeper-dev-cluster"
+    },
+    {
+      "ParameterKey": "KeyName",
+      "ParameterValue": "minesweeper-key-pair"
+    },
+    {
+      "ParameterKey": "NodeAutoScalingGroupDesiredCapacity",
+      "ParameterValue": "3"
+    },
+    {
+      "ParameterKey": "NodeAutoScalingGroupMaxSize",
+      "ParameterValue": "4"
+    },
+    {
+      "ParameterKey": "NodeAutoScalingGroupMinSize",
+      "ParameterValue": "1"
+    },
+    {
+      "ParameterKey": "NodeGroupName",
+      "ParameterValue": "minesweeper-node-group"
+    },
+    {
+      "ParameterKey": "NodeImageIdSSMParam",
+      "ParameterValue": "/aws/service/eks/optimized-ami/1.16/amazon-linux-2/recommended/image_id"
+    },
+    {
+      "ParameterKey": "NodeInstanceType",
+      "ParameterValue": "t3.medium"
+    },
+    {
+      "ParameterKey": "NodeVolumeSize",
+      "ParameterValue": "20"
+    }
+]

@@ -75,10 +75,10 @@ build:
 	yarn build
 
 build-docker:
-	./scripts/build_docker.sh
+	./scripts/docker/build_docker.sh
 
 push-docker:
-	./scripts/upload_docker.sh
+	./scripts/docker/upload_docker.sh
 
 # See https://circleci.com/docs/2.0/local-cli/#processing-a-config
 validate-circleci:

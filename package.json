@@ -68,13 +68,13 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "node scripts/js/start.js",
     "serve": "http-server ./build -p 8080",
-    "build": "node scripts/build.js",
+    "build": "node scripts/js/build.js",
     "lint": "eslint 'src/*/**/*.{js,jsx,ts,tsx}'",
     "lint:fix": "eslint 'src/*/**/*.{js,jsx,ts,tsx}' --fix",
     "stylelint:fix": "stylelint 'src/**/*.{scss,sass}' --fix",
-    "test": "node scripts/test.js",
+    "test": "node scripts/js/test.js",
     "test:coverage": "npm run test -- cover"
   },
   "devDependencies": {
