@@ -333,7 +333,7 @@ jobs:
 
       - alert_on_failure
 
-  setup_iam_user:
+  setup_iam:
     executor: aws-executor
     steps:
       - attach_workspace:
