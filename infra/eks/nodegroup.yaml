@@ -189,7 +189,7 @@ Resources:
         Fn::ImportValue: !Sub "${Environment}-cluster-sec-group-${ID}"
       IpProtocol: tcp
       SourceSecurityGroupId: !Ref NodeSecurityGroup
-      GroupdName: !Sub ${Environment}-ClusterControlPlaneSecurityGroupIngress-${ID}
+      GroupName: !Sub ${Environment}-ClusterControlPlaneSecurityGroupIngress-${ID}
       ToPort: 443
 
   ControlPlaneEgressToNodeSecurityGroup:
@@ -290,7 +290,7 @@ Resources:
         - AssociatePublicIpAddress: false
           DeviceIndex: 0
           Groups:
-          - Fn::ImportValue: !Sub "${Environment}-VPC"
+          - Fn::ImportValue: !Sub "${Environment}-vpc-${ID}"
         UserData:
           Fn::Base64:
             !Join

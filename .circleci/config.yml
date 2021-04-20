@@ -363,7 +363,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update curl nodejs npm jq
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
       - run:
@@ -395,7 +394,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update curl nodejs npm jq
+            apk add --update curl jq
             pip install awscli
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
