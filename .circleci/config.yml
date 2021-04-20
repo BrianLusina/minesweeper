@@ -291,7 +291,7 @@ jobs:
 
       - run:
           name: Setup EKS IAM
-          command:
+          command: |
             aws cloudformation deploy \
               --template-file << pipeline.parameters.workingdir >>/infra/iam/eks.yaml \
               --tags project=minesweeper \
@@ -299,7 +299,7 @@ jobs:
 
       - run:
           name: Setup IAM User
-          command:
+          command: |
             aws cloudformation deploy \
               --template-file << pipeline.parameters.workingdir >>/infra/iam/user.yaml \
               --tags project=minesweeper \
@@ -317,7 +317,7 @@ jobs:
 
       - run:
           name: Setup Networking Infrastructure
-          command:
+          command: |
             aws cloudformation deploy \
               --template-file << pipeline.parameters.workingdir >>/infra/networking/networking.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/networking/networking.params.json \
@@ -332,7 +332,7 @@ jobs:
       - checkout
       - run:
           name: Setup K8s Cluster
-          command:
+          command: |
             aws cloudformation deploy \
               --template-file << pipeline.parameters.workingdir >>/infra/eks/cluster.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json \
@@ -348,7 +348,7 @@ jobs:
 
       - run:
           name: Setup K8s Node Groups
-          command:
+          command: |
             aws cloudformation deploy \
               --template-file << pipeline.parameters.workingdir >>/infra/eks/nodegroup.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.params.json \
