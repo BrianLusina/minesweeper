@@ -284,6 +284,30 @@ jobs:
 
       - alert_on_failure
 
+  setup_iam:
+    executor: aws-executor
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Setup EKS IAM
+          command:
+            aws cloudformation deploy \
+              --template-file infra/iam/eks.yaml \
+              --tags project=minesweeper \
+              --stack-name "minesweeper-eks-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
+
+      - run:
+          name: Setup IAM User
+          command:
+            aws cloudformation deploy \
+              --template-file infra/iam/user.yaml \
+              --tags project=minesweeper \
+              --stack-name "minesweeper-user-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
+
+      - alert_on_failure
+
   setup_networking_infrastructure:
     executor: aws-executor
     steps:
@@ -297,7 +321,6 @@ jobs:
               --parameters file://infra/networking/networking.params.json \
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-networking-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
       - alert_on_failure
 
@@ -333,21 +356,6 @@ jobs:
 
       - alert_on_failure
 
-  setup_iam:
-    executor: aws-executor
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Setup IAM user
-          command:
-            aws cloudformation deploy \
-              --template-file infra/iam/iam.yaml \
-              --tags project=minesweeper \
-              --stack-name "minesweeper-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
-
-      - alert_on_failure
-
   deploy_application:
     executor: aws-executor
     steps:
@@ -364,7 +372,7 @@ jobs:
           name: Deploy Minesweeper Game
           command: |
             aws eks --region $AWS_REGION update-kubeconfig --name minesweeper-dev-cluster
-            kubectl config use-context arn:aws:eks:eu-west-1:960920920983:cluster/minesweeper-dev-cluster
+            kubectl config use-context arn:aws:eks:$AWS_REGION:$AWS_ACCOUNT_ID:cluster/minesweeper-dev-cluster
             kubectl apply -f k8s/deplyment.yaml
             kubectl apply -f k8s/service.yaml
 
@@ -397,7 +405,7 @@ jobs:
       - run:
           name: Smoke test
           command: |
-            HOST=$(kubectl get service minesweeper-capstone | grep 'amazonaws.com' | awk '{print $4}')
+            HOST=$(kubectl get service minesweeper-service | grep 'amazonaws.com' | awk '{print $4}')
             curl $HOST -f
       
       - alert_on_failure      
@@ -460,22 +468,31 @@ workflows:
                 - main
           requires:
             - build_docker_image
+
+      - setup_iam:
+          context: thelusina-context
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - push_latest
       
       - setup_networking_infrastructure:
           context: thelusina-context
           filters:
             branches:
               only:
-                - main
+                - develop
           requires:
-            - push_latest
+            - setup_iam
 
       - setup_cluster:
           context: thelusina-context
           filters:
             branches:
               only:
-                - main
+                - develop
           requires:
             - setup_networking_infrastructure
 
@@ -484,34 +501,25 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - develop
           requires:
             - setup_cluster
-
-      - setup_iam:
-          context: thelusina-context
-          filters:
-            branches:
-              only:
-                - main
-          requires:
-            - setup_node_groups
 
       - deploy_application:
           context: thelusina-context
           filters:
             branches:
               only:
-                - main
+                - develop
           requires:
-            - setup_iam
+            - setup_node_groups
 
       - smoke-test:
           context: thelusina-context
           filters:
             branches:
               only:
-                - main
+                - mdevelop
           requires:
             - deploy_application
 
@@ -520,6 +528,6 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - develop
           requires:
             - push_latest
