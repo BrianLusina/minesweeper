@@ -84,9 +84,10 @@ Resources:
 
   InternetGateway:
     Type: "AWS::EC2::InternetGateway"
-    Tags:
-    - Key: Name
-      Value: !Sub ${Environment}-internet-gateway-${ID}
+    Properties:
+      Tags:
+      - Key: Name
+        Value: !Sub ${Environment}-internet-gateway-${ID}
 
   VPCGatewayAttachment:
     Type: "AWS::EC2::VPCGatewayAttachment"
