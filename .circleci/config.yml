@@ -295,14 +295,16 @@ jobs:
             aws cloudformation create-stack \
               --stack-name "minesweeper-eks-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
               --template-body file://<< pipeline.parameters.workingdir >>/infra/iam/eks.yaml \
-              --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
       - run:
           name: Setup IAM User
           command: |
             aws cloudformation deploy \
               --stack-name "minesweeper-user-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --template-file << pipeline.parameters.workingdir >>/infra/iam/user.yaml
+              --template-file << pipeline.parameters.workingdir >>/infra/iam/user.yaml \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
       - alert_on_failure
 
@@ -320,7 +322,8 @@ jobs:
             aws cloudformation create-stack \
               --stack-name "minesweeper-dev-networking-${CIRCLE_WORKFLOW_ID:0:7}" \
               --template-body file://<< pipeline.parameters.workingdir >>/infra/networking/networking.yaml \
-              --parameters file://<< pipeline.parameters.workingdir >>/infra/networking/networking.params.json
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/networking/networking.params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
       - alert_on_failure
 
@@ -334,7 +337,8 @@ jobs:
             aws cloudformation create-stack \
               --stack-name "minesweeper-dev-cluster-${CIRCLE_WORKFLOW_ID:0:7}" \
               --template-body file://<< pipeline.parameters.workingdir >>/infra/eks/cluster.yaml \
-              --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
       - alert_on_failure
 
@@ -349,7 +353,8 @@ jobs:
             aws cloudformation create-stack \
               --stack-name "minesweeper-dev-cluster-node-groups-${CIRCLE_WORKFLOW_ID:0:7}" \
               --template-body file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.yaml \
-              --parameters file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.params.json
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
       - alert_on_failure
 
