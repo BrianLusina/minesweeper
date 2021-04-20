@@ -292,8 +292,10 @@ jobs:
       - run:
           name: Setup EKS IAM
           command: |
-            aws cloudformation deploy \
-              --template-file << pipeline.parameters.workingdir >>/infra/iam/eks.yaml \
+            aws cloudformation create-stack \
+              --template-body << pipeline.parameters.workingdir >>/infra/iam/eks.yaml \
+              --parameters << pipeline.parameters.workingdir >>/params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"            
               --tags project=minesweeper \
               --stack-name "minesweeper-eks-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -318,9 +320,10 @@ jobs:
       - run:
           name: Setup Networking Infrastructure
           command: |
-            aws cloudformation deploy \
-              --template-file << pipeline.parameters.workingdir >>/infra/networking/networking.yaml \
+            aws cloudformation create-stack \
+              --template-body << pipeline.parameters.workingdir >>/infra/networking/networking.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/networking/networking.params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-networking-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -333,9 +336,10 @@ jobs:
       - run:
           name: Setup K8s Cluster
           command: |
-            aws cloudformation deploy \
-              --template-file << pipeline.parameters.workingdir >>/infra/eks/cluster.yaml \
+            aws cloudformation create-stack \
+              --template-body << pipeline.parameters.workingdir >>/infra/eks/cluster.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-cluster-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -349,9 +353,10 @@ jobs:
       - run:
           name: Setup K8s Node Groups
           command: |
-            aws cloudformation deploy \
-              --template-file << pipeline.parameters.workingdir >>/infra/eks/nodegroup.yaml \
+            aws cloudformation create-stack \
+              --template-body << pipeline.parameters.workingdir >>/infra/eks/nodegroup.yaml \
               --parameters file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.params.json \
+              --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-cluster-node-groups-${CIRCLE_WORKFLOW_ID:0:7}" \
 
