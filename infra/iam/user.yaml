@@ -1,5 +1,5 @@
 Description:
-  Infrastructure management user CloudFormation template.
+  IAM Role, Policy and InstanceProfile creation
   
 Resources:
   
