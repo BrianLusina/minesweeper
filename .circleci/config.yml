@@ -287,18 +287,13 @@ jobs:
   setup_iam:
     executor: aws-executor
     steps:
-      - run:
-          name: Install Dependencies
-          command: apk add --update curl jq tar
-
-      - attach_workspace:
-          at: .
+      - checkout
 
       - run:
           name: Setup EKS IAM
           command:
             aws cloudformation deploy \
-              --template-file infra/iam/eks.yaml \
+              --template-file << pipeline.parameters.workingdir >>/infra/iam/eks.yaml \
               --tags project=minesweeper \
               --stack-name "minesweeper-eks-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -306,7 +301,7 @@ jobs:
           name: Setup IAM User
           command:
             aws cloudformation deploy \
-              --template-file infra/iam/user.yaml \
+              --template-file << pipeline.parameters.workingdir >>/infra/iam/user.yaml \
               --tags project=minesweeper \
               --stack-name "minesweeper-user-iam-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -315,18 +310,17 @@ jobs:
   setup_networking_infrastructure:
     executor: aws-executor
     steps:
-      - run:
-          name: Install Dependencies
-          command: apk add --update curl jq tar
+      - checkout
 
       - attach_workspace:
           at: .
+
       - run:
           name: Setup Networking Infrastructure
           command:
             aws cloudformation deploy \
-              --template-file infra/networking/networking.yaml \
-              --parameters file://infra/networking/networking.params.json \
+              --template-file << pipeline.parameters.workingdir >>/infra/networking/networking.yaml \
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/networking/networking.params.json \
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-networking-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -335,18 +329,13 @@ jobs:
   setup_cluster:
     executor: aws-executor
     steps:
-      - run:
-          name: Install Dependencies
-          command: apk add --update curl jq tar
-
-      - attach_workspace:
-          at: .
+      - checkout
       - run:
           name: Setup K8s Cluster
           command:
             aws cloudformation deploy \
-              --template-file infra/eks/cluster.yaml \
-              --parameters file://infra/params.json \
+              --template-file << pipeline.parameters.workingdir >>/infra/eks/cluster.yaml \
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/params.json \
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-cluster-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -355,18 +344,14 @@ jobs:
   setup_node_groups:
     executor: aws-executor
     steps:
-      - run:
-          name: Install Dependencies
-          command: apk add --update curl jq tar
+      - checkout
 
-      - attach_workspace:
-          at: .
       - run:
           name: Setup K8s Node Groups
           command:
             aws cloudformation deploy \
-              --template-file infra/eks/nodegroup.yaml \
-              --parameters file://infra/eks/nodegroup.params.json \
+              --template-file << pipeline.parameters.workingdir >>/infra/eks/nodegroup.yaml \
+              --parameters file://<< pipeline.parameters.workingdir >>/infra/eks/nodegroup.params.json \
               --tags project=minesweeper \
               --stack-name "minesweeper-dev-cluster-node-groups-${CIRCLE_WORKFLOW_ID:0:7}" \
 
@@ -375,12 +360,7 @@ jobs:
   deploy_application:
     executor: aws-executor
     steps:
-      - run:
-          name: Install Dependencies
-          command: apk add --update curl jq tar
-
-      - attach_workspace:
-          at: .
+      - checkout
 
       - run:
           name: Install dependencies
