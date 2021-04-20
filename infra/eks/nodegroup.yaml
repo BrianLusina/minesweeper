@@ -146,13 +146,15 @@ Mappings:
     eu-central-1:
       AmiId: ami-038bd8d3a2345061f
     eu-west-1:
-      AmiId: ami-0199284372364b02a
+      AmiId: ami-0061867f123dd2309
     eu-west-2:
-      AmiId: ami-0f454b09349248e29
+      AmiId: ami-0064f24dbfa281088
     eu-west-3:
       AmiId: ami-00b44348ab3eb2c9f
     eu-north-1:
       AmiId: ami-02218be9004537a65
+    af-south-1:
+      AmiId: ami-02700c093c8ad54b6
 
 Resources:
   NodeSecurityGroup:
