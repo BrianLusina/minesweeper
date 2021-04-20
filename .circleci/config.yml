@@ -313,9 +313,6 @@ jobs:
     steps:
       - checkout
 
-      - attach_workspace:
-          at: .
-
       - run:
           name: Setup Networking Infrastructure
           command: |
@@ -393,8 +390,7 @@ jobs:
   smoke-test:
     executor: smoke-executor
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
 
       - run:
           name: Install dependencies
