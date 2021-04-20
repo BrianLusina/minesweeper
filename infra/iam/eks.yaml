@@ -59,7 +59,7 @@ Resources:
           Effect: Allow
           Resource: "*"
         Version: '2012-10-17'
-      PolicyName: !Sub ${Environment}-CloudWatchMetricPolicy-${ID}
+      PolicyName: !Sub ${Environment}-CloudWatchMetricPolicy
       Roles:
       - Ref: EksServiceRole
 
@@ -68,7 +68,7 @@ Resources:
     Type: AWS::IAM::Policy
     DependsOn: EksServiceRole
     Properties:
-      PolicyName: !Sub ${Environment}-LoadBalancerPolicy-${ID}"
+      PolicyName: !Sub ${Environment}-LoadBalancerPolicy"
       PolicyDocument:
         Statement:
         - Action:
@@ -195,7 +195,7 @@ Resources:
           Effect: Allow
           Resource: "*"
         Version: '2012-10-17'
-      PolicyName: !Sub ${Environment}-IngressControllerPolicy-${ID}
+      PolicyName: !Sub ${Environment}-IngressControllerPolicy
       Roles:
       - Ref: EksWorkerRole
 
@@ -226,7 +226,7 @@ Resources:
           Effect: Allow
           Resource: !Sub "arn:aws:eks:${AWS::Region}:${AWS::AccountId}:cluster/*"
         Version: '2012-10-17'
-      PolicyName: !Sub "${Environment}-EksClusterPolicy-${ID}"
+      PolicyName: !Sub "${Environment}-EksClusterPolicy"
       Groups:
       - !Ref EksAccessGroup
       
@@ -260,7 +260,7 @@ Resources:
           Resource:
             Fn::GetAtt: BastionConnectGroup.Arn
         Version: '2012-10-17'
-      PolicyName: !Sub ${Environment}-BastionConnectGroupPolicy-${ID}
+      PolicyName: !Sub ${Environment}-BastionConnectGroupPolicy
       Roles:
       - Ref: BastionHostRole
       
@@ -292,7 +292,7 @@ Resources:
             StringEquals:
               ec2:osuser: "${aws:username}"
         Version: '2012-10-17'
-      PolicyName: !Sub "${Environment}-BastionInstanceConnectPolicy-${ID}"
+      PolicyName: !Sub "${Environment}-BastionInstanceConnectPolicy"
       Groups:
       - !Ref BastionConnectGroup
 

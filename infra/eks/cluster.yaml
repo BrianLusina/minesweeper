@@ -35,9 +35,9 @@ Resources:
         SecurityGroupIds:
           - !Ref ClusterSecurityGroup
         SubnetIds:
-          - Fn::ImportValue: !Sub "${Environment}-Subnet01"
-          - Fn::ImportValue: !Sub "${Environment}-Subnet02"
-          - Fn::ImportValue: !Sub "${Environment}-Subnet03"
+          - Fn::ImportValue: !Sub "${Environment}-Subnet01-${ID}"
+          - Fn::ImportValue: !Sub "${Environment}-Subnet02-${ID}"
+          - Fn::ImportValue: !Sub "${Environment}-Subnet03-${ID}"
       RoleArn:
         Fn::ImportValue: !Sub "${Environment}::EksServiceRoleArn"
       Version: 1.19
