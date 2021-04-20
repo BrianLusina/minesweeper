@@ -1,5 +1,11 @@
 Description:
   IAM Role, Policy and InstanceProfile creation
+
+Parameters:
+  ID:
+    Description: Unique identifier.
+    Type: String
+    Default: 999hadvhgchjesr
   
 Resources:
   
@@ -19,7 +25,7 @@ Resources:
   Group:
     Type: AWS::IAM::Group
     Properties:
-      GroupName: minesweeper
+      GroupName: !Sub minesweeper-${ID}
       Path: /
       Policies:
         - PolicyName: String
@@ -37,7 +43,7 @@ Resources:
     Type: AWS::IAM::User
     Properties: 
       Groups:
-        - minesweeper
+        - !Sub minesweeper-${ID}
       LoginProfile:
         Password: !Join ['', ['{{resolve:secretsmanager:', !Ref MinesweeperSecret, ':SecretString:password}}' ]]
       UserName: !Join ['', ['{{resolve:secretsmanager:', !Ref MinesweeperSecret, ':SecretString:username}}' ]]

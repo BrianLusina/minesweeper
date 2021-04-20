@@ -4,6 +4,11 @@ Description: 'Amazon VPC - Public subnets only'
 
 Parameters:
 
+  ID:
+    Description: Unique identifier.
+    Type: String
+    Default: 999hadvhgchjesr
+
   Environment:
     Description: Environment name, used as a prefix for resources
     Type: String
@@ -75,10 +80,12 @@ Resources:
       EnableDnsHostnames: true
       Tags:
       - Key: Name
-        Value: !Sub '${Environment}-VPC'
+        Value: !Sub '${Environment}-vpc-${ID}'
 
   InternetGateway:
     Type: "AWS::EC2::InternetGateway"
+    - Key: Name
+      Value: !Sub ${Environment}-internet-gateway-${ID}
 
   VPCGatewayAttachment:
     Type: "AWS::EC2::VPCGatewayAttachment"
@@ -121,7 +128,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${Environment}-Subnet01"
+        Value: !Sub "${Environment}-Subnet01-${ID}"
       - Key: kubernetes.io/role/elb
         Value: 1
 
@@ -142,7 +149,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${Environment}-Subnet02"
+        Value: !Sub "${Environment}-Subnet02-${ID}"
       - Key: kubernetes.io/role/elb
         Value: 1
 
@@ -164,7 +171,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${Environment}-Subnet03"
+        Value: !Sub "${Environment}-Subnet03-${ID}"
       - Key: kubernetes.io/role/elb
         Value: 1
 
@@ -198,28 +205,28 @@ Outputs:
       - !Join [ ",", [ !Ref Subnet01, !Ref Subnet02, !Ref Subnet03 ] ]
       - !Join [ ",", [ !Ref Subnet01, !Ref Subnet02 ] ]
     Export:
-      Name: !Sub "${Environment}-Subnets"
+      Name: !Sub "${Environment}-Subnets-${ID}"
 
   SubnetID1:
     Description: Subnet-1 ID
     Value: !Ref Subnet01
     Export:
-      Name: !Sub "${Environment}-Subnet01"
+      Name: !Sub "${Environment}-Subnet01-${ID}"
 
   SubnetID2:
     Description: Subnet-2 ID
     Value: !Ref Subnet02
     Export:
-      Name: !Sub "${Environment}-Subnet02"
+      Name: !Sub "${Environment}-Subnet02-${ID}"
 
   SubnetID3:
     Description: Subnet-3 ID
     Value: !Ref Subnet03
     Export:
-      Name: !Sub "${Environment}-Subnet03"
+      Name: !Sub "${Environment}-Subnet03-${ID}"
   
   VPCID:
     Description: VPC ID
     Value: !Ref VPC
     Export:
-      Name: !Sub "${Environment}-VPC"
+      Name: !Sub "${Environment}-vpc-${ID}"

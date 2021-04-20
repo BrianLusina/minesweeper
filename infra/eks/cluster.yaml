@@ -8,24 +8,29 @@ Parameters:
     Description: Environment name, used as a prefix for resources
     Type: String
 
+  ID:
+    Description: Unique identifier.
+    Type: String
+    Default: 999hadvhgchjesr
+
 Resources:
   ClusterSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: EKS Cluster security group
-      GroupName: !Sub "${Environment}-cluster-sec-group"
+      GroupName: !Sub "${Environment}-cluster-sec-group-${ID}"
       VpcId:
         Fn::ImportValue: !Sub "${Environment}-VPC"
       Tags:
-      - Key: !Sub "kubernetes.io/cluster/${Environment}-cluster"
+      - Key: !Sub "kubernetes.io/cluster/${Environment}-cluster-${ID}"
         Value: 'owned'
       - Key: 'Name'
-        Value: !Sub "${Environment}-cluster-sec-group"
+        Value: !Sub "${Environment}-cluster-sec-group-${ID}"
 
   Cluster:
     Type: "AWS::EKS::Cluster"
     Properties:
-      Name: !Sub "${Environment}-cluster"
+      Name: !Sub "${Environment}-cluster-${ID}"
       ResourcesVpcConfig:
         SecurityGroupIds:
           - !Ref ClusterSecurityGroup
@@ -43,10 +48,10 @@ Outputs:
     Description: Control plane security group
     Value: !Ref ClusterSecurityGroup
     Export:
-      Name: !Sub "${Environment}-cluster-sec-group"
+      Name: !Sub "${Environment}-cluster-sec-group-${ID}"
   
   Cluster:
     Description: Cluster name
     Value: !Ref Cluster
     Export:
-      Name: !Sub "${Environment}-cluster"
+      Name: !Sub "${Environment}-cluster-${ID}"

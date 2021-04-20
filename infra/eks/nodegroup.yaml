@@ -25,6 +25,11 @@ Metadata:
  
 Parameters:
 
+  ID:
+    Description: Unique identifier.
+    Type: String
+    Default: 999hadvhgchjesr
+
   Environment:
     Description: Environment name, used as a prefix for resources
     Type: String
@@ -158,7 +163,7 @@ Resources:
         - Key: !Sub kubernetes.io/cluster/${ClusterName}
           Value: owned
       VpcId:
-        Fn::ImportValue: !Sub "${Environment}-VPC"
+        Fn::ImportValue: !Sub "${Environment}-vpc-${ID}"
 
   NodeSecurityGroupIngress:
     Type: "AWS::EC2::SecurityGroupIngress"
@@ -167,6 +172,7 @@ Resources:
       Description: Allow node to communicate with each other
       FromPort: 0
       GroupId: !Ref NodeSecurityGroup
+      GroupName: !Sub ${Environment}-NodeSecurityGroupIngress-${ID}
       IpProtocol: "-1"
       SourceSecurityGroupId: !Ref NodeSecurityGroup
       ToPort: 65535
@@ -178,9 +184,10 @@ Resources:
       Description: Allow pods to communicate with the cluster API Server
       FromPort: 443
       GroupId:
-        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group"
+        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group-${ID}"
       IpProtocol: tcp
       SourceSecurityGroupId: !Ref NodeSecurityGroup
+      GroupdName: !Sub ${Environment}-ClusterControlPlaneSecurityGroupIngress-${ID}
       ToPort: 443
 
   ControlPlaneEgressToNodeSecurityGroup:
@@ -190,8 +197,9 @@ Resources:
       Description: Allow the cluster control plane to communicate with worker Kubelet and pods
       DestinationSecurityGroupId: !Ref NodeSecurityGroup
       FromPort: 1025
+      GroupName: !Sub ${Environment}-ControlPlanEgressToNodeSecurityGroup-${ID}
       GroupId:
-        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group"
+        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group-${ID}"
       IpProtocol: tcp
       ToPort: 65535
 
@@ -202,8 +210,9 @@ Resources:
       Description: Allow the cluster control plane to communicate with pods running extension API servers on port 443
       DestinationSecurityGroupId: !Ref NodeSecurityGroup
       FromPort: 443
+      GroupName: !Sub "${Environment}-ControlPlaneEgressToNodeSecurityGroupOn443-${ID}"
       GroupId:
-        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group"
+        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group-${ID}"
       IpProtocol: tcp
       ToPort: 443
 
@@ -215,8 +224,9 @@ Resources:
       FromPort: 1025
       GroupId: !Ref NodeSecurityGroup
       IpProtocol: tcp
+      GroupeName: !Sub ${Environment}-NodeSecurityGroupFromControlPlaneIngress-${ID}
       SourceSecurityGroupId:
-        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group"
+        Fn::ImportValue: !Sub "${Environment}-cluster-sec-group-${ID}"
       ToPort: 65535
 
   NodeSecurityGroupFromControlPlaneOn443Ingress:
@@ -225,6 +235,7 @@ Resources:
     Properties:
       Description: Allow pods running extension API servers on port 443 to receive communication from cluster control plane
       FromPort: 443
+      GroupName: !Sub $Environment-NodeSecurityGroupFromControlPlanOn443Ingress-${ID}
       GroupId: !Ref NodeSecurityGroup
       IpProtocol: tcp
       SourceSecurityGroupId:
@@ -234,6 +245,7 @@ Resources:
   NodeLaunchConfig:
     Type: "AWS::AutoScaling::LaunchConfiguration"
     Properties:
+      LaunchConfigurationName: !Sub $Environment-NodeLaunchConfig-${ID}
       BlockDeviceMappings:
         - DeviceName: /dev/xvda
           Ebs:
@@ -297,10 +309,12 @@ Resources:
                             - Fn::ImportValue: !Sub "${ClusterName}"
                             - 'worker'
                             - 'launchtemplate'
+                            - !Sub ${ID}
 
   NodeAutoScalingGroup:
     Type: "AWS::AutoScaling::AutoScalingGroup"
     Properties:
+      AutoScalingGroupName: !Sub ${Environment}-NodeAutoScalingGroup-${ID}
       DesiredCapacity: !Ref NodeAutoScalingGroupDesiredCapacity
       LaunchTemplate:
         LaunchTemplateId: !Ref NodeLaunchTemplate
@@ -312,15 +326,15 @@ Resources:
       Tags:
         - Key: Name
           PropagateAtLaunch: true
-          Value: !Sub ${ClusterName}-${NodeGroupName}-Node
-        - Key: !Sub kubernetes.io/cluster/${ClusterName}
+          Value: !Sub ${ClusterName}-${NodeGroupName}-Node-${ID}
+        - Key: !Sub kubernetes.io/cluster/${ClusterName}-${ID}
           PropagateAtLaunch: true
           Value: owned
       VPCZoneIdentifier:
         Fn::Split:
           - ","
           - Fn::ImportValue:
-              Fn::Sub: "${Environment}-Subnets"
+              Fn::Sub: "${Environment}-Subnets-${ID}"
     UpdatePolicy:
       AutoScalingRollingUpdate:
         MaxBatchSize: 1
