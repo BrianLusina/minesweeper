@@ -357,7 +357,7 @@ jobs:
       - alert_on_failure
 
   deploy_application:
-    executor: aws-executor
+    executor: smoke-executor
     steps:
       - checkout
       
@@ -374,6 +374,7 @@ jobs:
       - run:
           name: Deploy Minesweeper Game
           command: |
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name minesweeper-dev-cluster --profile default
             kubectl config use-context arn:aws:eks:$AWS_DEFAULT_REGION:$AWS_ACCOUNT_ID:cluster/minesweeper-dev-cluster
             kubectl apply -f k8s/
 
@@ -399,6 +400,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl jq
+            pip install awscli
             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
       - run:
