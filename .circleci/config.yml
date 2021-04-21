@@ -372,11 +372,6 @@ jobs:
           aws-profile: default
           install-kubectl: true
 
-      # - kubernetes/create-or-update-resource:
-      #     get-rollout-status: true
-      #     resource-file-path: k8s/deployment.yaml
-      #     resource-name: k8s/minesweeper
-
       - run:
           name: Deploy Minesweeper Game
           command: |
@@ -398,16 +393,19 @@ jobs:
       - alert_on_failure
 
   smoke-test:
-    executor: smoke-executor
+    executor: aws-cli/default
     steps:
       - checkout
 
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update curl jq
-            pip install awscli
-            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      # will use provided defaults from settings
+      - aws-cli/setup:
+          profile-name: default
+
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: minesweeper-dev-cluster
+          aws-region: $AWS_DEFAULT_REGION
+          aws-profile: default
+          install-kubectl: true
 
       - run:
           name: Smoke test

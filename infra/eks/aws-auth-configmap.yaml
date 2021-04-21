@@ -5,13 +5,13 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: arn:aws:iam::234968051656:role/minesweeper-dev-nodegroup-NodeInstanceRole-1GX9W9JYQJLGM
+    - rolearn: arn:aws:iam::<ACCOUNT_ID>:role/minesweeper-dev-nodegroup-NodeInstanceRole-1GX9W9JYQJLGM
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
         - system:nodes
   mapUsers: |
-    - userarn: arn:aws:iam::234968051656:user/minesweeper-user
+    - userarn: arn:aws:iam::<ACCOUNT_ID>:user/minesweeper-user
       username: minesweeper
       groups:
         - system:masters
