@@ -361,10 +361,8 @@ jobs:
     steps:
       - checkout
       
+      # will use provided defaults from settings
       - aws-cli/setup:
-          aws-access-key-id: $AWS_ACCESS_KEY_ID
-          aws-region: $AWS_DEFAULT_REGION
-          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
           profile-name: default
 
       - aws-eks/update-kubeconfig-with-authenticator:
