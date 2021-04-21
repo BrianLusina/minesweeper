@@ -41,6 +41,7 @@ orbs:
   slack: circleci/slack@4.3.0
   aws-cli: circleci/aws-cli@2.0
   aws-eks: circleci/aws-eks@1.0.3
+  kubernetes: circleci/kubernetes@0.11.2
 
 commands:
 
@@ -371,6 +372,11 @@ jobs:
           aws-profile: default
           install-kubectl: true
 
+      # - kubernetes/create-or-update-resource:
+      #     get-rollout-status: true
+      #     resource-file-path: k8s/deployment.yaml
+      #     resource-name: k8s/minesweeper
+
       - run:
           name: Deploy Minesweeper Game
           command: |
@@ -428,30 +434,32 @@ workflows:
   test_build_push_tag:
     jobs:
       - dependencies:
-          context: thelusina-context
+          context: slack-context
 
       - lint:
-          context: thelusina-context
+          context: slack-context
           requires:
             - dependencies
       
       - test:
-          context: thelusina-context
+          context: slack-context
           requires:
             - lint
       
       - security-scan:
-          context: thelusina-context
+          context: slack-context
           requires:
             - test
 
       - build:
-          context: thelusina-context
+          context: slack-context
           requires:
             - security-scan
 
       - build_docker_image:
-          context: thelusina-context
+          context: 
+            - docker-context
+            - slack-context
           filters:
             branches:
               only:
@@ -461,7 +469,9 @@ workflows:
             - build
 
       - push_latest:
-          context: thelusina-context
+          context: 
+            - docker-context
+            - slack-context
           filters:
             branches:
               only:
@@ -471,7 +481,9 @@ workflows:
             - build_docker_image
 
       - setup_iam:
-          context: thelusina-context
+          context: 
+            - aws-context
+            - slack-context
           filters:
             branches:
               only:
@@ -480,7 +492,9 @@ workflows:
             - push_latest
       
       - setup_networking_infrastructure:
-          context: thelusina-context
+          context: 
+            - aws-context
+            - slack-context
           filters:
             branches:
               only:
@@ -489,7 +503,9 @@ workflows:
             - setup_iam
 
       - setup_cluster:
-          context: thelusina-context
+          context: 
+            - aws-context
+            - slack-context
           filters:
             branches:
               only:
@@ -498,7 +514,9 @@ workflows:
             - setup_networking_infrastructure
 
       - setup_node_groups:
-          context: thelusina-context
+          context: 
+            - aws-context
+            - slack-context
           filters:
             branches:
               only:
@@ -507,7 +525,9 @@ workflows:
             - setup_cluster
 
       - deploy_application:
-          context: thelusina-context
+          context: 
+            - aws-context
+            - slack-context
           filters:
             branches:
               only:
@@ -516,7 +536,7 @@ workflows:
             - setup_node_groups
 
       - smoke-test:
-          context: thelusina-context
+          context: slack-context
           filters:
             branches:
               only:
@@ -525,7 +545,9 @@ workflows:
             - deploy_application
 
       - publish_release:
-          context: thelusina-context
+          context: 
+            - github-context
+            - slack-context
           filters:
             branches:
               only:
