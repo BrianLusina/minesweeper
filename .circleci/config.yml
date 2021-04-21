@@ -357,7 +357,7 @@ jobs:
       - alert_on_failure
 
   deploy_application:
-    executor: smoke-executor
+    executor: aws-cli/default
     steps:
       - checkout
       
