@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
@@ -18,9 +19,72 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@app": ["app/client/ClientApp.tsx"],
+      "@assets/*": ["assets/*"],
+      "@images/*": ["assets/images/*"],
+      "@icons/*": ["assets/icons/*"],
+      "@fonts/*": ["assets/fonts/*"],
+      "@config": ["config/config.ts"],
+      "@apiConfig": ["config/api.ts"],
+      "@metricsConfig": ["config/metrics.ts"],
+      "@analyticsConfig": ["config/analytics.ts"],
+      "@routesConfig": ["config/routes.ts"],
+      "@styles/*": ["styles/*"],
+      "@mediaQueries": ["styles/mediaqueries.ts"],
+      "@scss/*": ["styles/scss/*"],
+      "@css/*": ["styles/css/*"],
+      "@libs/*": ["libs/*"],
+      "@i18n/*": ["libs/i18n/*"],
+      "@hooks/*": ["libs/hooks/*"],
+      "@storage/*": ["libs/services/storage/*"],
+      "@cookie": ["libs/services/storage/cookie/cookie.ts"],
+      "@cache": ["libs/services/storage/cache/cache.ts"],
+      "@localStorage": ["libs/services/storage/local/local.ts"],
+      "@sessionStorage": ["libs/services/storage/session/session.ts"],
+      "@services/*": ["libs/services/*"],
+      "@socket/*": ["libs/services/socket/*"],
+      "@logger": ["libs/services/logger/index.ts"],
+      "@analytics": ["libs/services/analytics/index.ts"],
+      "@monitoring": ["libs/services/monitoring/index.ts"],
+      "@store": ["libs/redux/index.ts"],
+      "@components/*": ["components/*"],
+      "@ui/*": ["components/ui/*"],
+      "@layouts/*": ["components/layouts/*"],
+      "@sections/*": ["components/sections/*"],
+      "@pageUi/*": ["components/pages/*"],
+      "@containers/*": ["components/containers/*"],
+      "@context/*": ["components/context/*"],
+      "@authContext": ["components/context/Auth/index.ts"],
+      "@themeContext": ["components/context/Themes/index.ts"],
+      "@translationContext": ["components/context/Translation/index.ts"],
+      "@routes/*": ["routes/*"],
+      "@appRoutes": ["routes/index.tsx"],
+      "@utils": ["utils/utils.ts"],
+      "@meta/*": ["utils/meta/*"],
+      "@timeUtils": ["utils/time/timeUtils.ts"],
+      "@timeConstants": ["utils/time/constants.ts"],
+      "@domUtils": ["utils/dom/domUtils.ts"],
+      "@jwtUtils": ["utils/jwt/jwtUtils.ts"],
+      "@fileUtils": ["utils/files/fileUtils.ts"],
+      "@log": ["utils/log/index.ts"],
+      "@pages/*": ["pages/*"],
+      "@screens/*": ["screens/*"],
+      "@constants": ["utils/constants.ts"],
+      "@hoc/*": ["hocs/*"],
+      "@notification": ["components/containers/notification/notify.ts"],
+      "@testUtils/*": ["test/*"]      
+    }
   },
   "include": [
-    "src"
+    "src", 
+    "scripts/ts/setupTests.ts"
+  ],
+  "exclude": [
+    "src/**/*.story.mdx",
+    "src/**/*.story.@(js|jsx|ts|tsx)",
+    "src/**/*.stories.mdx",
+    "src/**/*.stories.@(js|jsx|ts|tsx)"
   ]
 }
