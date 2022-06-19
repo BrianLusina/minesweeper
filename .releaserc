@@ -1,6 +1,6 @@
 {
   "branches": ["main", {"name":"beta", "prerelease": true}],
-  "repositoryUrl": "https://github.com/BrianLusina/minesweeper.git",
+  "repositoryUrl": "https://github.com/BrianLusina/games.git",
   "tagFormat": "v${version}",
   "plugins": [
     "@semantic-release/commit-analyzer",

@@ -1,17 +1,15 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './app';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Game from './containers/game';
 import reportWebVitals from './reportWebVitals';
-import './styles/css/index.css';
+import './index.scss';
 
-const root = createRoot(
-  document.getElementById('root') as HTMLElement
-);
-
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+/* istanbul ignore next */
+ReactDOM.render(
+  <React.StrictMode>
+    <Game />
+  </React.StrictMode>,
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function
