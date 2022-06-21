@@ -1,18 +1,22 @@
 import { FunctionComponent } from 'react';
+import { BannerProps } from './Banner.interface';
 
-const Banner: FunctionComponent = () => {
-    return (
-        <section id="one">
-            <header className="major">
-                <h2>Ipsum lorem dolor aliquam ante commodo<br />
-                magna sed accumsan arcu neque.</h2>
-            </header>
-            <p>Accumsan orci faucibus id eu lorem semper. Eu ac iaculis ac nunc nisi lorem vulputate lorem neque cubilia ac in adipiscing in curae lobortis tortor primis integer massa adipiscing id nisi accumsan pellentesque commodo blandit enim arcu non at amet id arcu magna. Accumsan orci faucibus id eu lorem semper nunc nisi lorem vulputate lorem neque cubilia.</p>
-            <ul className="actions">
-                <li><a href="#" className="button">Learn More</a></li>
-            </ul>
-        </section>
-    )
+const Banner: FunctionComponent<BannerProps> = ({ title, description, link }) => {
+  return (
+    <section id="one">
+      <header className="major">
+        <h2>{title}</h2>
+      </header>
+      <p>{description}</p>
+      <ul className="actions">
+        <li>
+          <a href={link} className="button">
+            Learn More
+          </a>
+        </li>
+      </ul>
+    </section>
+  );
 };
 
 export default Banner;

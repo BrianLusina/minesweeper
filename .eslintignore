@@ -6,5 +6,6 @@ public/
 .eslintrc.js
 .pretterrc.js
 server/
-*.test.ts
-*.test.tsx
+*.d.ts
+scripts/
+config/

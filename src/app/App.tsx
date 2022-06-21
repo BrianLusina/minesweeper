@@ -1,16 +1,17 @@
-import Header from '@sections/Header';
-import Footer from '@sections/Footer';
-import './App.css';
+import Banner from '@components/ui/Banner';
+import Portfolio from '@components/Portfolio';
+import Contact from '@components/ui/Contact';
+import MainLayout from '@layouts/MainLayout';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <div id='main'>
-        
+    <MainLayout>
+      <div id="main">
+        <Banner title="Title" description="description" link="#" />
+        <Portfolio />
+        <Contact />
       </div>
-      <Footer />
-    </div>
+    </MainLayout>
   );
 }
 
