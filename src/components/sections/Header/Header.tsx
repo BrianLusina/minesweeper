@@ -1,11 +1,12 @@
 import { FunctionComponent } from 'react';
 import Avatar from '@components/ui/Avatar';
 // import avatar from '@images/avatar.jpg'
+import logo from '@images/logo.png';
 
 const Header: FunctionComponent = () => {
   return (
     <div className="inner">
-      <Avatar url="../../assets/images/avatar.jpg" />
+      <Avatar url={logo} />
       <h1>
         <strong>Gamez</strong>, a simple
         <br />

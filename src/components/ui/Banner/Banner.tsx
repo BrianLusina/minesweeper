@@ -1,7 +1,12 @@
 import { FunctionComponent } from 'react';
+import Button from '../Button/Button';
 import { BannerProps } from './Banner.interface';
 
 const Banner: FunctionComponent<BannerProps> = ({ title, description, link }) => {
+  const handleClick = () => {
+    window.open(link);
+  };
+
   return (
     <section id="one">
       <header className="major">
@@ -10,9 +15,7 @@ const Banner: FunctionComponent<BannerProps> = ({ title, description, link }) =>
       <p>{description}</p>
       <ul className="actions">
         <li>
-          <a href={link} className="button">
-            Learn More
-          </a>
+          <Button onClick={handleClick} text="Learn More" />
         </li>
       </ul>
     </section>

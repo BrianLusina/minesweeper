@@ -1,6 +1,6 @@
 import Banner from '@components/ui/Banner';
 import Portfolio from '@components/Portfolio';
-import Contact from '@components/ui/Contact';
+import Contact from '@components/Contact';
 import MainLayout from '@layouts/MainLayout';
 
 function App() {

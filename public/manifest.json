@@ -8,14 +8,51 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "/assets/images/logos/logo72.png",
+      "sizes": "72x72",
       "type": "image/png",
-      "sizes": "192x192"
+      "density": "1.5"
     },
     {
-      "src": "logo512.png",
+      "src": "/assets/images/logos/logo96.png",
+      "sizes": "96x96",
       "type": "image/png",
-      "sizes": "512x512"
+      "density": "2.0"
+     },   
+    {
+      "src": "/assets/images/logos/logo16.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "/assets/images/logos/logo32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/assets/images/logos/logo57.png",
+      "type": "image/png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "/assets/images/logos/logo60.png",
+      "type": "image/png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "/assets/images/logos/logo70.png",
+      "type": "image/png",
+      "sizes": "70x70"
+    },
+    {
+      "src": "/assets/images/logos/logo76.png",
+      "type": "image/png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "/assets/images/logos/logo96.png",
+      "type": "image/png",
+      "sizes": "96x96"
     }
   ],
   "start_url": ".",
