@@ -44,3 +44,7 @@ export const snakeCaseObjectKeys = (
 ): Record<string | number, unknown> => {
   return mapKeys(obj, (v, k) => snakeCase(k));
 };
+
+export function changedArray(a: Array<unknown> = [], b: Array<unknown> = []): boolean {
+  return a.length !== b.length || a.some((item, index) => !Object.is(item, b[index]));
+}
