@@ -3,8 +3,7 @@
         "eslint --fix"
     ],
     "*.{js,jsx,tsx,ts,scss,sass}": [
-      "stylelint 'src/**/*.{js,jsx,ts,tsx,scss,sass}'",
-      "git add"
+      "stylelint 'src/**/*.{js,jsx,ts,tsx,scss,sass}'"
     ],    
     "*.{png,jpeg,jpg,gif,svg}": [
         "imagemin-lint-staged"
