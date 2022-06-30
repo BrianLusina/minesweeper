@@ -1,8 +1,8 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 type ButtonProps = {
   onClick: () => void;
-  text: string;
+  text: ReactNode;
   type?: 'button' | 'reset' | 'submit';
   disabled?: boolean;
 };

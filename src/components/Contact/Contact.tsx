@@ -6,7 +6,9 @@ const Contact: FunctionComponent = () => {
   return (
     <section id="three">
       <h2>Get In Touch</h2>
-      <p>Want to reach out and talk about robots, AI and the universe? Oh and games? Drop a line</p>
+      <p>
+        Want to reach out and talk about robots, AI and the universe? Oh, and games? Drop a line
+      </p>
       <div className="row">
         <div className="col-8 col-12-small">
           <ContactForm />

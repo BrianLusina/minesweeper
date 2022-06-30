@@ -53,7 +53,6 @@
       "@ui/*": ["components/ui/*"],
       "@layouts/*": ["components/layouts/*"],
       "@sections/*": ["components/sections/*"],
-      "@pageUi/*": ["components/pages/*"],
       "@containers/*": ["components/containers/*"],
       "@context/*": ["components/context/*"],
       "@authContext": ["components/context/Auth/index.ts"],

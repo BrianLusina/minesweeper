@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Banner should render 1`] = `
+<div>
+  <section
+    id="one"
+  >
+    <header
+      class="major"
+    >
+      <h2>
+        Banner Title
+      </h2>
+    </header>
+    <p>
+      Banner description
+    </p>
+    <ul
+      class="actions"
+    >
+      <li>
+        <button
+          class="button "
+          type="button"
+        >
+          Learn More
+        </button>
+      </li>
+    </ul>
+  </section>
+</div>
+`;

@@ -7,7 +7,11 @@ function App() {
   return (
     <MainLayout>
       <div id="main">
-        <Banner title="Title" description="description" link="#" />
+        <Banner
+          title="Welcome to Gamez"
+          description="This is a simple site with mini games on the web"
+          link="#"
+        />
         <Portfolio />
         <Contact />
       </div>

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tile should render 1`] = `
+<div>
+  <article
+    class="col-6 col-12-xsmall work-item"
+  >
+    <a
+      class="image fit thumb"
+      href="https://someimageurl.png"
+    >
+      <img
+        alt="Some Title"
+        src="https://somethumbnail.png"
+      />
+    </a>
+    <h3>
+      Some Title
+    </h3>
+    <p>
+      Some Description
+    </p>
+  </article>
+</div>
+`;

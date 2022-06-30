@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactForm should render 1`] = `
+<div>
+  <form
+    method="post"
+  >
+    <div
+      class="row gtr-uniform gtr-50"
+    >
+      <div
+        class="col-6 col-12-xsmall"
+      >
+        <input
+          id="name"
+          name="name"
+          placeholder="Name"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="col-6 col-12-xsmall"
+      >
+        <input
+          id="email"
+          name="email"
+          placeholder="Email"
+          type="email"
+          value=""
+        />
+      </div>
+      <div
+        class="col-12"
+      >
+        <textarea
+          id="message"
+          name="message"
+          placeholder="Message"
+          rows="4"
+        />
+      </div>
+    </div>
+  </form>
+  <ul
+    class="actions"
+  >
+    <li>
+      <button
+        class="button disabled"
+        disabled=""
+        type="submit"
+      >
+        Send message
+      </button>
+    </li>
+  </ul>
+</div>
+`;

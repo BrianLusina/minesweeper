@@ -345,7 +345,6 @@ module.exports = function (webpackEnv) {
         '@jwtUtils': path.resolve('src/utils/jwt/jwtUtils.ts'),
         '@fileUtils': path.resolve('src/utils/files/fileUtils.ts'),
         '@log': path.resolve('src/utils/log/index.ts'),
-        '@pages': path.resolve('src/pages/'),
         '@screens': path.resolve('src/screens/'),
         '@constants': path.resolve('src/utils/constants.ts'),
         '@hoc': path.resolve('src/hocs/'),

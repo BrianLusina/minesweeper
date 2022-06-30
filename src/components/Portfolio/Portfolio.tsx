@@ -19,7 +19,7 @@ const Portfolio: FunctionComponent = () => {
 
   return (
     <section id="two">
-      <h2>Recent Work</h2>
+      <h2>Games</h2>
       <div className="row">
         <Tile
           title="Magna sed consequat tempus"
